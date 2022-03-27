@@ -1103,97 +1103,97 @@ void ViewScoreboardStu(Schoolyear* YearCur, int x)
 	}
 }
 
-void UpdateStudentResult(Schoolyear*& YearCur, Course*& CourseHead)
-{
-	int opt;
-	string StudentID;
-	string NameOfCourse;
-
-	cout << "Input Name of Course: ";
-	cin.ignore();
-	getline(cin, NameOfCourse);
-
-	cout << "Input Student ID: ";
-	cin.ignore();
-	getline(cin, StudentID);
-	do
-	{
-
-
-		cout << "UPDATE STUDENT RESULT" << endl;
-		cout << "1.Other Mark" << endl;
-		cout << "2.Midterm Mark" << endl;
-		cout << "3.Final Mark" << endl;
-		cout << "4.Total Mark" << endl;
-		cout << "0 to stop." << endl;
-		cout << "Input your option: ";
-		cin >> opt;
-
-		Course* CourseCur = CourseHead;
-		Data* InfoCur = nullptr;
-		Course* EnrollList = nullptr;
-		while (CourseCur != nullptr && CourseCur->NameOfCourse != NameOfCourse)
-		{
-			CourseCur = CourseCur->pNext;
-		}
-		if (CourseCur != nullptr)
-		{
-			InfoCur = CourseCur->DataOfStu;
-			while (InfoCur != nullptr && InfoCur->StudentID != StudentID)
-			{
-				InfoCur = InfoCur->pNext;
-			}
-
-			EnrollList = YearCur->CLass[InfoCur->j].Stu[InfoCur->k].Registered;
-			while (EnrollList != nullptr && EnrollList->NameOfCourse != NameOfCourse)
-			{
-				EnrollList = EnrollList->pNext;
-			}
-		}
-
-		string change;
-		switch (opt)
-		{
-		case 1:
-
-
-			cout << "Input your change: ";
-			cin >> change;
-			if (InfoCur != nullptr && EnrollList != nullptr)
-			{
-				InfoCur->Score.Other = change;
-				EnrollList->Score.Other = change;
-			}
-			break;
-		case 2:
-
-			cout << "Input your change: ";
-			cin >> change;
-			if (InfoCur != nullptr && EnrollList != nullptr)
-			{
-				InfoCur->Score.Midterm = change;
-				EnrollList->Score.Midterm = change;
-			}
-			break;
-		case 3:
-
-			cout << "Input your change: ";
-			cin >> change;
-			if (InfoCur != nullptr && EnrollList != nullptr)
-			{
-				InfoCur->Score.Final = change;
-				EnrollList->Score.Final = change;
-			}
-			break;
-		case 4:
-			cout << "Input your change: ";
-			cin >> change;
-			if (InfoCur != nullptr && EnrollList != nullptr)
-			{
-				InfoCur->Score.Total = change;
-				EnrollList->Score.Total = change;
-			}
-			break;
-		}
-	} while (opt != 0);
-}
+//void UpdateStudentResult(Schoolyear*& YearCur, Course*& CourseHead)
+//{
+//	int opt;
+//	string StudentID;
+//	string NameOfCourse;
+//
+//	cout << "Input Name of Course: ";
+//	cin.ignore();
+//	getline(cin, NameOfCourse);
+//
+//	cout << "Input Student ID: ";
+//	cin.ignore();
+//	getline(cin, StudentID);
+//	do
+//	{
+//
+//
+//		cout << "UPDATE STUDENT RESULT" << endl;
+//		cout << "1.Other Mark" << endl;
+//		cout << "2.Midterm Mark" << endl;
+//		cout << "3.Final Mark" << endl;
+//		cout << "4.Total Mark" << endl;
+//		cout << "0 to stop." << endl;
+//		cout << "Input your option: ";
+//		cin >> opt;
+//
+//		Course* CourseCur = CourseHead;
+//		Data* InfoCur = nullptr;
+//		Course* EnrollList = nullptr;
+//		while (CourseCur != nullptr && CourseCur->NameOfCourse != NameOfCourse)
+//		{
+//			CourseCur = CourseCur->pNext;
+//		}
+//		if (CourseCur != nullptr)
+//		{
+//			InfoCur = CourseCur->DataOfStu;
+//			while (InfoCur != nullptr && InfoCur->StudentID != StudentID)
+//			{
+//				InfoCur = InfoCur->pNext;
+//			}
+//
+//			EnrollList = YearCur->CLass[InfoCur->j].Stu[InfoCur->k].Registered;
+//			while (EnrollList != nullptr && EnrollList->NameOfCourse != NameOfCourse)
+//			{
+//				EnrollList = EnrollList->pNext;
+//			}
+//		}
+//
+//		string change;
+//		switch (opt)
+//		{
+//		case 1:
+//
+//
+//			cout << "Input your change: ";
+//			cin >> change;
+//			if (InfoCur != nullptr && EnrollList != nullptr)
+//			{
+//				InfoCur->Score.Other = change;
+//				EnrollList->Score.Other = change;
+//			}
+//			break;
+//		case 2:
+//
+//			cout << "Input your change: ";
+//			cin >> change;
+//			if (InfoCur != nullptr && EnrollList != nullptr)
+//			{
+//				InfoCur->Score.Midterm = change;
+//				EnrollList->Score.Midterm = change;
+//			}
+//			break;
+//		case 3:
+//
+//			cout << "Input your change: ";
+//			cin >> change;
+//			if (InfoCur != nullptr && EnrollList != nullptr)
+//			{
+//				InfoCur->Score.Final = change;
+//				EnrollList->Score.Final = change;
+//			}
+//			break;
+//		case 4:
+//			cout << "Input your change: ";
+//			cin >> change;
+//			if (InfoCur != nullptr && EnrollList != nullptr)
+//			{
+//				InfoCur->Score.Total = change;
+//				EnrollList->Score.Total = change;
+//			}
+//			break;
+//		}
+//	} while (opt != 0);
+//}
