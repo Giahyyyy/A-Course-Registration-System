@@ -13,7 +13,7 @@ int main()
 	do
 	{
 		Now(Today);
-		InputYourAcc(username, password);
+		InputAccount(username, password);
 		int x = CheckLogin(username, password, YearCur1, Staff, NumOfStaff);
 		if (x == 0)
 		{
@@ -73,13 +73,13 @@ int main()
 				case 1:
 				{
 					system("cls");
-					ViewInfo(x, YearCur1, Staff);
+					ViewIn(x, YearCur1, Staff);
 					break;
 				}
 				case 2:
 				{
 					system("cls");
-					ChangePass(YearCur1, Staff, x, NumOfStaff);
+					ChangePass(YearCur1, Staff, x, NumOfStaff);  
 					break;
 				}
 				case 3:
@@ -89,12 +89,12 @@ int main()
 					{
 						if (YearHead == nullptr)
 						{
-							AddNewYear(YearHead);
+							AddYear(YearHead);
 							YearCur1 = YearHead;
 						}
 						else
 						{
-							AddNewYear(YearCur1->YearNext);
+							AddYear(YearCur1->YearNext);
 							YearCur1 = YearCur1->YearNext;
 						}
 					}
@@ -105,7 +105,7 @@ int main()
 						else
 						{
 							int t, i;
-							ViewCourse(YearCur1->CLass[x / 100 - 1].Stu[x % 100 - 1].Registered, t, i);
+							ViewCou(YearCur1->CLass[x / 100 - 1].Stu[x % 100 - 1].Registered, t, i);
 						}
 					}
 					break;
@@ -116,12 +116,12 @@ int main()
 					if (x < 100)
 					{
 						YearCur2 = YearHead;
-						AddNewSemester(YearCur2, sem);
+						AddSem(YearCur2, sem);
 					}
 					else
 					{
 						int t, i;
-						ViewCourse(YearCur1->CLass[x / 100 - 1].Stu[x % 100 - 1].Registered, t, i);
+						ViewCou(YearCur1->CLass[x / 100 - 1].Stu[x % 100 - 1].Registered, t, i);
 					}
 					break;
 				}
@@ -164,26 +164,26 @@ int main()
 								case 1:
 								{
 									system("cls");
-									AddNewCourse(YearCur2->Sem[sem].pCourse);
+									AddCou(YearCur2->Sem[sem].pCourse);
 									break;
 								}
 								case 2:
 								{
 									system("cls");
 									int t;
-									ViewCourse(YearCur2->Sem[sem].pCourse, t, t);
+									ViewCou(YearCur2->Sem[sem].pCourse, t, t);
 									break;
 								}
 								case 3:
 								{
 									system("cls");
-									UpdateCourse(YearCur2, sem);
+									UpdateCou(YearCur2, sem);
 									break;
 								}
 								case 4:
 								{
 									system("cls");
-									DeleteCourse(YearCur2, sem);
+									DeleteCou(YearCur2, sem);
 									break;
 								}
 								case 5:

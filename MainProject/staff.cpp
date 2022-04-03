@@ -23,88 +23,90 @@ void clear()
 	cout << endl;
 }
 
-void InputYourAcc(string& username, string& Pass)
+void InputAccount(string& Name, string& Pass)
 {
-	cout << "Input your username: ";
-	getline(cin, username);
-	cout << "Input your Pass: ";
+	cout << "Please enter your Name: ";
+	getline(cin, Name);
+	cout << "Please enter your Pass: ";
 	getline(cin, Pass);
 	cout << endl;
 }
 
-void AddNewYear(Schoolyear*& NewYear) // Khi tham chieu thi tham chieu YearNow->YearNext sau khi het ham thi cho YearNow=YearNow->YearNext
+void AddYear(Schoolyear*& Ny) // Khi tham chieu thi tham chieu YearNow->YearNext sau khi het ham thi cho YearNow=YearNow->YearNext
 {
-	if (!NewYear) NewYear = new Schoolyear;
-	cout << "Input school year: ";
-	cin >> NewYear->NumOfYear;
+	if (!Ny) Ny = new Schoolyear;
+	cout << "Please enter school year: ";
+	cin >> Ny->NumOfYear;
+
 	cout << endl;
-	cout << "Input number of classes: ";
-	cin >> NewYear->NumOfClass;
+	cout << "Please enter number of classes: ";
+	cin >> Ny->NumOfClass;
 	cin.ignore();
-	NewYear->CLass = new Class[NewYear->NumOfClass];
-	for (int i = 0; i < NewYear->NumOfClass; i++)
+	Ny->CLass = new Class[Ny->NumOfClass];
+	for (int i = 0; i < Ny->NumOfClass; i++)
 	{
 		while (true)
 		{
-			cout << "Input name of the class: ";
-			getline(cin, NewYear->CLass[i].NameOfClass);
-			ifstream in(NewYear->CLass[i].NameOfClass + ".csv");
+			cout << "Please enter name of the class: ";
+			getline(cin, Ny->CLass[i].NameOfClass);
+			ifstream in(Ny->CLass[i].NameOfClass + ".csv");
 			if (in.is_open()) break;
 			else
 			{
-				cout << "Can not open files to input data!!!";
+				cout << "Can not open files";
 			}
 		}
 		string temp;
-		ifstream in(NewYear->CLass[i].NameOfClass + ".csv");
+		ifstream in(Ny->CLass[i].NameOfClass + ".csv");
 		getline(in, temp, ',');
-		NewYear->CLass[i].NumOfStudent = stoi(temp);
-		NewYear->CLass[i].Stu = new Student[stoi(temp)];
+		Ny->CLass[i].NumOfStudent = stoi(temp);
+		Ny->CLass[i].Stu = new Student[stoi(temp)];
 		getline(in, temp);
-		for (int j = 0; j < NewYear->CLass[i].NumOfStudent; j++)
+		for (int j = 0; j < Ny->CLass[i].NumOfStudent; j++)
 		{
-			getline(in, NewYear->CLass[i].Stu[j].Num, ',');
-			getline(in, NewYear->CLass[i].Stu[j].StudentID, ',');
-			getline(in, NewYear->CLass[i].Stu[j].FirstName, ',');
-			getline(in, NewYear->CLass[i].Stu[j].Name, ',');
-			getline(in, NewYear->CLass[i].Stu[j].Sex, ',');
-			getline(in, NewYear->CLass[i].Stu[j].DOB, ',');
-			getline(in, NewYear->CLass[i].Stu[j].ID, ',');
-			getline(in, NewYear->CLass[i].Stu[j].Pass);
-			NewYear->CLass[i].Stu[j].Registered = nullptr;
+			getline(in, Ny->CLass[i].Stu[j].Num, ',');
+			getline(in, Ny->CLass[i].Stu[j].StudentID, ',');
+			getline(in, Ny->CLass[i].Stu[j].FirstName, ',');
+			getline(in, Ny->CLass[i].Stu[j].Name, ',');
+			getline(in, Ny->CLass[i].Stu[j].Sex, ',');
+			getline(in, Ny->CLass[i].Stu[j].DOB, ',');
+			getline(in, Ny->CLass[i].Stu[j].ID, ',');
+			getline(in, Ny->CLass[i].Stu[j].Pass);
+			Ny->CLass[i].Stu[j].Registered = nullptr;
 		}
-		cout << "Input data of class " << NewYear->CLass[i].NameOfClass << " successfully" << endl;
+
+		cout << "Enter data of class " << Ny->CLass[i].NameOfClass << " successfully" << endl;
 	}
-	NewYear->YearNext = nullptr;
+	Ny->YearNext = nullptr;
 }
 
-int CheckLogin(string username, string Pass, Schoolyear*& YearCur, Teacher* Staff, int NumOfStaff)
+int CheckLogin(string Name, string Pass, Schoolyear*& Year, Teacher* Staff, int NumOfStaff)
 {
-	if (username[0] >= 'a' && username[0] <= 'z')
+	if (Name[0] >= 'a' && Name[0] <= 'z')
 	{
 		int i = 0;
 		for (i; i < NumOfStaff; i++)
 		{
-			if (username == Staff[i].Acc && Pass == Staff[i].Pass)
+			if (Name == Staff[i].Acc && Pass == Staff[i].Pass)
 				return i + 1;
 		}
 		return 0;
 	}
-	else if (username[0] >= 'A' && username[0] <= 'Z')
-		return 0; //Vì username mình cấp không có chữ in hoa
-	else if (username[0] >= 48 && username[0] <= 57 && username.length() == 8)
+	else if (Name[0] >= 'A' && Name[0] <= 'Z')
+		return 0; //Vì tên mình cấp không có chữ in hoa
+	else if (Name[0] >= 48 && Name[0] <= 57 && Name.length() == 8)
 	{
-		if (username[1] >= 48 && username[1] <= 57)
+		if (Name[1] >= 48 && Name[1] <= 57)
 		{
-			int x = ((int)username[0] - 48) * 10 + (int)username[1] - 48;
-			while (YearCur != nullptr && x != ((((int)YearCur->NumOfYear[2]) - 48) * 10 + ((int)YearCur->NumOfYear[3] - 48)))
-				YearCur = YearCur->YearNext;
-			if (YearCur == nullptr) return 0;
+			int x = ((int)Name[0] - 48) * 10 + (int)Name[1] - 48;
+			while (Year != nullptr && x != ((((int)Year->NumOfYear[2]) - 48) * 10 + ((int)Year->NumOfYear[3] - 48)))
+				Year = Year->YearNext;
+			if (Year == nullptr) return 0;
 			else
 			{
-				for (int i = 0; i < YearCur->NumOfClass; i++)
-					for (int j = 0; j < YearCur->CLass[i].NumOfStudent; j++)
-						if (username == YearCur->CLass[i].Stu[j].StudentID && YearCur->CLass[i].Stu[j].Pass == Pass)
+				for (int i = 0; i < Year->NumOfClass; i++)
+					for (int j = 0; j < Year->CLass[i].NumOfStudent; j++)
+						if (Name == Year->CLass[i].Stu[j].StudentID && Year->CLass[i].Stu[j].Pass == Pass)
 							return (i + 1) * 100 + j + 1;
 				return 0;
 			}
@@ -114,55 +116,54 @@ int CheckLogin(string username, string Pass, Schoolyear*& YearCur, Teacher* Staf
 	else return 0;
 }
 
-void InputStaff(Teacher*& Staff, int& NumOfStaff)
-{
+void InputStaff(Teacher*& S, int& NumOfS){
 	ifstream in("StaffAcc.csv");
 	string temp;
 	getline(in, temp, ',');
-	NumOfStaff = stoi(temp);
-	Staff = new Teacher[stoi(temp)];
+	NumOfS = stoi(temp);
+	S = new Teacher[stoi(temp)];
 	getline(in, temp);
-	for (int i = 0; i < NumOfStaff; i++)
+	for (int i = 0; i < NumOfS; i++)
 	{
-		getline(in, Staff[i].FirstName, ',');
-		getline(in, Staff[i].Name, ',');
-		getline(in, Staff[i].Sex, ',');
-		getline(in, Staff[i].Email, ',');
-		getline(in, Staff[i].Acc, ',');
-		getline(in, Staff[i].Pass);
+		getline(in, S[i].FirstName, ',');
+		getline(in, S[i].Name, ',');
+		getline(in, S[i].Sex, ',');
+		getline(in, S[i].Email, ',');
+		getline(in, S[i].Acc, ',');
+		getline(in, S[i].Pass);
 	}
 
 }
 
-void ViewInfo(int x, Schoolyear* YearCur, Teacher* Staff)
+void ViewIn(int x, Schoolyear* Year, Teacher* Staff)
 {
 	if (x < 100)
 	{
-		cout << "Fullname: " << Staff[x - 1].FirstName << " " << Staff[x - 1].Name << endl;
+		cout << "FullName: " << Staff[x - 1].FirstName << " " << Staff[x - 1].Name << endl;
 		cout << "Sex: " << Staff[x - 1].Sex << endl;
 		cout << "Email: " << Staff[x - 1].Email << endl;
 	}
 	else
 	{
-		cout << "Fullname: " << YearCur->CLass[x / 100 - 1].Stu[x % 100 - 1].FirstName << YearCur->CLass[x / 100 - 1].Stu[x % 100 - 1].Name << endl;
-		cout << "Class: " << YearCur->CLass[x / 100 - 1].NameOfClass << endl;
-		cout << "Student ID: " << YearCur->CLass[x / 100 - 1].Stu[x % 100 - 1].StudentID << endl;
-		cout << "Date of Birth: " << YearCur->CLass[x / 100 - 1].Stu[x % 100 - 1].DOB << endl;
-		cout << "Sex: " << YearCur->CLass[x / 100 - 1].Stu[x % 100 - 1].Sex << endl;
-		cout << "Social ID: " << YearCur->CLass[x / 100 - 1].Stu[x % 100 - 1].ID << endl;
-		cout << "Pass" << YearCur->CLass[x / 100 - 1].Stu[x % 100 - 1].Pass << endl;
+		cout << "FullName: " << Year->CLass[x / 100 - 1].Stu[x % 100 - 1].FirstName << Year->CLass[x / 100 - 1].Stu[x % 100 - 1].Name << endl;
+		cout << "Class: " << Year->CLass[x / 100 - 1].NameOfClass << endl;
+		cout << "Student ID: " << Year->CLass[x / 100 - 1].Stu[x % 100 - 1].StudentID << endl;
+		cout << "Date of Birth: " << Year->CLass[x / 100 - 1].Stu[x % 100 - 1].DOB << endl;
+		cout << "Sex: " << Year->CLass[x / 100 - 1].Stu[x % 100 - 1].Sex << endl;
+		cout << "Social ID: " << Year->CLass[x / 100 - 1].Stu[x % 100 - 1].ID << endl;
+		cout << "Pass" << Year->CLass[x / 100 - 1].Stu[x % 100 - 1].Pass << endl;
 	}
 }
 
-void ChangePass(Schoolyear* YearCur, Teacher* Staff, int x, int NumOfStaff)
+void ChangePass(Schoolyear* Year, Teacher* S, int x, int NumOfS)
 {
 	string Pass;
 	while (true)
 	{
-		cout << "Enter your new Pass: ";
+		cout << "Please enter your new Pass: ";
 		cin >> Pass;
 		cin.ignore();
-		cout << "Reenter your new Pass: ";
+		cout << "Please enter your new Pass: ";
 		string temp;
 		getline(cin, temp);
 		if (temp != Pass)
@@ -172,73 +173,79 @@ void ChangePass(Schoolyear* YearCur, Teacher* Staff, int x, int NumOfStaff)
 		}
 		else break;
 	}
-	if (x < 100) Staff[x - 1].Pass = Pass;
-	else YearCur->CLass[x / 100 - 1].Stu[x % 100 - 1].Pass = Pass;
+	if (x < 100) S[x - 1].Pass = Pass;
+	else Year->CLass[x / 100 - 1].Stu[x % 100 - 1].Pass = Pass;
 	if (x < 100)
 	{
 		ofstream out("StaffAcc.csv", ios::trunc);
-		out << NumOfStaff << ",,,,," << endl;
-		for (int i = 0; i < NumOfStaff; i++)
+		out << NumOfS << ",,,,," << endl;
+		for (int i = 0; i < NumOfS; i++)
 		{
-			out << Staff[i].FirstName << "," << Staff[i].Name << "," << Staff[i].Sex << "," << Staff[i].Email << "," << Staff[i].Acc << "," << Staff[i].Pass << endl;
+			out << S[i].FirstName << "," << S[i].Name << "," << S[i].Sex << "," << S[i].Email << "," << S[i].Acc << "," << S[i].Pass << endl;
 		}
 	}
 	else
 	{
-		ofstream out(YearCur->CLass[x / 100 - 1].NameOfClass + ".csv", ios::trunc);
-		out << YearCur->CLass[x / 100 - 1].NumOfStudent << ",,,,,,," << endl;
-		for (int i = 0; i < YearCur->CLass[x / 100 - 1].NumOfStudent; i++)
+		ofstream out(Year->CLass[x / 100 - 1].NameOfClass + ".csv", ios::trunc);
+		out << Year->CLass[x / 100 - 1].NumOfStudent << ",,,,,,," << endl;
+		for (int i = 0; i < Year->CLass[x / 100 - 1].NumOfStudent; i++)
 		{
-			out << YearCur->CLass[x / 100 - 1].Stu[i].Num << "," << YearCur->CLass[x / 100 - 1].Stu[i].StudentID << "," << YearCur->CLass[x / 100 - 1].Stu[i].FirstName << ","
-				<< YearCur->CLass[x / 100 - 1].Stu[i].Name << "," << YearCur->CLass[x / 100 - 1].Stu[i].Sex << "," << YearCur->CLass[x / 100 - 1].Stu[i].DOB << ","
-				<< YearCur->CLass[x / 100 - 1].Stu[i].ID << "," << YearCur->CLass[x / 100 - 1].Stu[i].Pass << endl;
+			out << Year->CLass[x / 100 - 1].Stu[i].Num << "," << Year->CLass[x / 100 - 1].Stu[i].StudentID << "," << Year->CLass[x / 100 - 1].Stu[i].FirstName << ","
+				<< Year->CLass[x / 100 - 1].Stu[i].Name << "," << Year->CLass[x / 100 - 1].Stu[i].Sex << "," << Year->CLass[x / 100 - 1].Stu[i].DOB << ","
+				<< Year->CLass[x / 100 - 1].Stu[i].ID << "," << Year->CLass[x / 100 - 1].Stu[i].Pass << endl;
 		}
 	}
 	cout << "Your Pass was changed successfully." << endl;
 }
 
-void AddNewSemester(Schoolyear*& YearCur, int& x)
+void AddSem(Schoolyear*& Year, int& x)
 {
 	string temp;
-	cout << "Input school year: ";
+	cout << "Please enter school year: ";
 	cin >> temp;
 	cout << endl;
-	while (YearCur && temp != YearCur->NumOfYear)
+	while (Year && temp != Year->NumOfYear)
 	{
-		YearCur = YearCur->YearNext;
+		Year = Year->YearNext;
 	}
-	if (!YearCur)
+	if (!Year)
 	{
-		cout << "This year is not valid." << endl;
+		cout << "This year is not valid. Please enter again: " << endl;
 		return;
 	}
-	cout << "Input semester: ";
+	cout << "Please enter semester: ";
 	cin >> x;
 	cin.ignore();
 	x = x - 1;
-	cout << "The dates have form dd/mm/yyyy." << endl;
-	cout << "Input start date of this semester: ";
-	getline(cin, YearCur->Sem[x].StartSem);
+	cout << "The form of date is dd/mm/yyyy." << endl;
+	cout << "Please enter start date of this semester: ";
+	getline(cin, Year->Sem[x].StartSem);
 	cout << endl;
-	cout << "Input end date of this semester: ";
+	cout << "Please enter end date of this semester: ";
 	getline(cin, temp);
 	cout << endl;
-	YearCur->Sem[x].EndSem.day = (int)temp[0] * 10 + (int)temp[1] - 528;
-	YearCur->Sem[x].EndSem.month = (int)temp[3] * 10 + (int)temp[4] - 528;
-	YearCur->Sem[x].EndSem.year = (int)temp[6] * 1000 + (int)temp[7] * 100 + (int)temp[8] * 10 + (int)temp[9] - 53328;
-	cout << "Input the date start to register course: ";
+
+	Year->Sem[x].EndSem.day = (int)temp[0] * 10 + (int)temp[1] - 528;
+	Year->Sem[x].EndSem.month = (int)temp[3] * 10 + (int)temp[4] - 528;
+	Year->Sem[x].EndSem.year = (int)temp[6] * 1000 + (int)temp[7] * 100 + (int)temp[8] * 10 + (int)temp[9] - 53328;
+
+	cout << "Please enter the date start to register course: ";
 	getline(cin, temp);
 	cout << endl;
-	YearCur->Sem[x].StartReg.day = (int)temp[0] * 10 + (int)temp[1] - 528;
-	YearCur->Sem[x].StartReg.month = (int)temp[3] * 10 + (int)temp[4] - 528;
-	YearCur->Sem[x].StartReg.year = (int)temp[6] * 1000 + (int)temp[7] * 100 + (int)temp[8] * 10 + (int)temp[9] - 53328;
-	cout << "Input the date end to register course: ";
+
+	Year->Sem[x].StartReg.day = (int)temp[0] * 10 + (int)temp[1] - 528;
+	Year->Sem[x].StartReg.month = (int)temp[3] * 10 + (int)temp[4] - 528;
+	Year->Sem[x].StartReg.year = (int)temp[6] * 1000 + (int)temp[7] * 100 + (int)temp[8] * 10 + (int)temp[9] - 53328;
+
+	cout << "Please enter the date end to register course: ";
 	getline(cin, temp);
 	cout << endl;
-	YearCur->Sem[x].EndReg.day = (int)temp[0] * 10 + (int)temp[1] - 528;
-	YearCur->Sem[x].EndReg.month = (int)temp[3] * 10 + (int)temp[4] - 528;
-	YearCur->Sem[x].EndReg.year = (int)temp[6] * 1000 + (int)temp[7] * 100 + (int)temp[8] * 10 + (int)temp[9] - 53328;
-	ifstream in(YearCur->NumOfYear + "_" + to_string(x + 1) + ".csv");
+
+	Year->Sem[x].EndReg.day = (int)temp[0] * 10 + (int)temp[1] - 528;
+	Year->Sem[x].EndReg.month = (int)temp[3] * 10 + (int)temp[4] - 528;
+	Year->Sem[x].EndReg.year = (int)temp[6] * 1000 + (int)temp[7] * 100 + (int)temp[8] * 10 + (int)temp[9] - 53328;
+	ifstream in(Year->NumOfYear + "_" + to_string(x + 1) + ".csv");
+
 	if (!in.is_open())
 	{
 		cout << "Input fail.";
@@ -248,10 +255,10 @@ void AddNewSemester(Schoolyear*& YearCur, int& x)
 		Course* Cur = nullptr;
 		while (!in.eof())
 		{
-			if (!YearCur->Sem[x].pCourse)
+			if (!Year->Sem[x].pCourse)
 			{
-				YearCur->Sem[x].pCourse = new Course;
-				Cur = YearCur->Sem[x].pCourse;
+				Year->Sem[x].pCourse = new Course;
+				Cur = Year->Sem[x].pCourse;
 			}
 			else
 			{
@@ -273,37 +280,45 @@ void AddNewSemester(Schoolyear*& YearCur, int& x)
 	}
 }
 
-void AddNewCourse(Course*& CourseHead)
+void AddCou(Course*& Cou)
 {
 	Course* temp = new Course;
 	temp->NumOfStu = 0;
-	cout << "Input course ID: ";
+	cout << "Please enter course ID: ";
 	getline(cin, temp->CourseID);
-	cout << "Input name of course: ";
+
+	cout << "Please enter Name of course: ";
 	getline(cin, temp->NameOfCourse);
-	cout << "Input teacher name: ";
+
+	cout << "Please enter teacher Name: ";
 	getline(cin, temp->NameOfTeacher);
-	cout << "Input number of credits: ";
+
+	cout << "Please enter number of credits: ";
 	getline(cin, temp->NumOfCredit);
-	cout << "Input day 1: ";
+
+	cout << "Please enter day 1: ";
 	getline(cin, temp->Day1);
-	cout << "Input session 1: ";
+
+	cout << "Please enter session 1: ";
 	getline(cin, temp->Session1);
-	cout << "Input day 2: ";
+
+	cout << "Please enter day 2: ";
 	getline(cin, temp->Day2);
-	cout << "Input session 2: ";
+
+	cout << "Please enter session 2: ";
 	getline(cin, temp->Session2);
-	temp->pNext = CourseHead;
-	CourseHead = temp;
+
+	temp->pNext = Cou;
+	Cou = temp;
 	cout << "Add new course successfully";
 }
 
-void ViewCourse(Course* CourseHead, int& t, int& i)
+void ViewCou(Course* Cou, int& t, int& i)
 {
 	clear();
 	int k = 1;
 	int y = 16, a = 20;
-	Course* Cur = CourseHead;
+	Course* Cur = Cou;
 	cout << endl;
 	gotoxy(8, 15);
 	cout << "Course ID";
@@ -351,16 +366,16 @@ void ViewCourse(Course* CourseHead, int& t, int& i)
 	i = k;
 }
 
-void UpdateCourse(Schoolyear* YearCur, int sem)
+void UpdateCou(Schoolyear* Year, int Se)
 {
-	Course* Cur = YearCur->Sem[sem].pCourse;
+	Course* Cur = Year->Sem[Se].pCourse;
 	int count = 1, t, option;
-	ViewCourse(YearCur->Sem[sem].pCourse, t, count);
+	ViewCou(Year->Sem[Se].pCourse, t, count);
 	t++;
-	cout << "Enter the course you want to update:";
+	cout << "Please enter the course you want to update:";
 	cin >> option;
 	cin.ignore();
-	Cur = YearCur->Sem[sem].pCourse;
+	Cur = Year->Sem[Se].pCourse;
 	for (int i = 1; i < option; i++)
 	{
 		Cur = Cur->pNext;
@@ -379,31 +394,31 @@ void UpdateCourse(Schoolyear* YearCur, int sem)
 	switch (option)
 	{
 	case 1:
-		cout << "Change the name of teacher: ";
+		cout << "Please Change the Name of teacher: ";
 		getline(cin, Cur->NameOfTeacher);
 		break;
 	case 2:
-		cout << "Change the number of credits: ";
+		cout << "Please Change the number of credits: ";
 		getline(cin, Cur->NumOfCredit);
 		break;
 	case 3:
-		cout << "Change the student enrolled: ";
+		cout << "Please Change the student enrolled: ";
 		cin >> Cur->NumOfStu;
 		break;
 	case 4:
-		cout << "Change the day 1: ";
+		cout << "Please Change the day 1: ";
 		getline(cin, Cur->Day1);
 		break;
 	case 5:
-		cout << "Change the session 1: ";
+		cout << "Please Change the session 1: ";
 		getline(cin, Cur->Session1);
 		break;
 	case 6:
-		cout << "Change the day 2: ";
+		cout << "Please Change the day 2: ";
 		getline(cin, Cur->Day2);
 		break;
 	case 7:
-		cout << "Change the session 2: ";
+		cout << "Please Change the session 2: ";
 		getline(cin, Cur->Session2);
 		break;
 	default:
@@ -412,11 +427,11 @@ void UpdateCourse(Schoolyear* YearCur, int sem)
 	cout << "Update course successfully";
 }
 
-void SaveInfoCourse(Schoolyear* YearCur, int sem)
+void SaveInfoCou(Schoolyear* Year, int sem)
 {
-	Course* Cur = YearCur->Sem[sem].pCourse;
+	Course* Cur = Year->Sem[sem].pCourse;
 	ofstream course;
-	course.open(YearCur->NumOfYear + "_" + (char)(sem + 49) + ".csv", ios::trunc);
+	course.open(Year->NumOfYear + "_" + (char)(sem + 49) + ".csv", ios::trunc);
 	while (Cur != nullptr)
 	{
 		course << Cur->NameOfTeacher << "," << Cur->NumOfCredit << "," << Cur->NumOfStu << "," << Cur->Day1 << "," << Cur->Session1 << "," << Cur->Day2 << "," << Cur->Session2 << "\n";
@@ -425,21 +440,21 @@ void SaveInfoCourse(Schoolyear* YearCur, int sem)
 	course.close();
 }
 
-void DeleteCourse(Schoolyear*& YearCur, int sem)
+void DeleteCou(Schoolyear*& Year, int Se)
 {
-	Course* Cur = YearCur->Sem[sem].pCourse;
+	Course* Cur = Year->Sem[Se].pCourse;
 	int count = 1, t, option;
-	ViewCourse(YearCur->Sem[sem].pCourse, t, count);
+	ViewCou(Year->Sem[Se].pCourse, t, count);
 	t++;
-	cout << "Enter the course you want to update:";
+	cout << "Please enter the course you want to update:";
 	cin >> option;
 	cin.ignore();
-	Cur = YearCur->Sem[sem].pCourse;
+	Cur = Year->Sem[Se].pCourse;
 	if (option <= count)
 	{
 		if (option == 1)
 		{
-			YearCur->Sem[sem].pCourse = YearCur->Sem[sem].pCourse->pNext;
+			Year->Sem[Se].pCourse = Year->Sem[Se].pCourse->pNext;
 			delete Cur;
 		}
 		else
@@ -453,12 +468,12 @@ void DeleteCourse(Schoolyear*& YearCur, int sem)
 			Cur->pNext = Cur->pNext->pNext;
 			delete temp;
 			cout << "Delete course successfully.";
-			//SaveInfoCourse(YearCur, sem); //Goi lai ham Save de luu thong tin vao file csv
+			//SaveInfoCourse(Year, sem); //Goi lai ham Save de luu thong tin vao file csv
 		}
 	}
 	else
 	{
-		cout << "This course is not existed!";
+		cout << "This course is not delted";
 	}
 }
 
@@ -506,19 +521,19 @@ bool CheckDateEndSemester(Date Today, Date EndSem)
 	return false;
 }
 
-bool CheckImport(Schoolyear* YearCur, int x)
+bool CheckImport(Schoolyear* Year, int x)
 {
-	if (!YearCur->CLass[x / 100 - 1].Stu[x % 100 - 1].Registered) return false;
-	if (YearCur->CLass[x / 100 - 1].Stu[x % 100 - 1].Registered->Score.Final == "") return false;
+	if (!Year->CLass[x / 100 - 1].Stu[x % 100 - 1].Registered) return false;
+	if (Year->CLass[x / 100 - 1].Stu[x % 100 - 1].Registered->Score.Final == "") return false;
 	return true;
 }
 
-void CourseEnroll(Schoolyear* YearCur, Course* CourseHead, int x, int& NumOfOpt)
+void CourseEnroll(Schoolyear* Year, Course* CourseHead, int x, int& NumOfOpt)
 {
 	int opt;
 	int j = (x / 100) - 1;
 	int k = (x % 100) - 1;
-	Course* ListEnroll = YearCur->CLass[j].Stu[k].Registered;
+	Course* ListEnroll = Year->CLass[j].Stu[k].Registered;
 	while (ListEnroll != nullptr && ListEnroll->pNext != nullptr)
 	{
 		ListEnroll = ListEnroll->pNext;
@@ -530,7 +545,7 @@ void CourseEnroll(Schoolyear* YearCur, Course* CourseHead, int x, int& NumOfOpt)
 		int i = 1;
 		Course* CourseCur = CourseHead;
 		int t = 0;
-		ViewCourse(CourseCur, t, i);
+		ViewCou(CourseCur, t, i);
 		t++;
 		i--;
 		cout << "Register(0.stop): ";
@@ -557,7 +572,7 @@ void CourseEnroll(Schoolyear* YearCur, Course* CourseHead, int x, int& NumOfOpt)
 
 		if (CourseCur != nullptr)
 		{
-			Course* EnrollMove = YearCur->CLass[j].Stu[k].Registered;
+			Course* EnrollMove = Year->CLass[j].Stu[k].Registered;
 			while (EnrollMove != nullptr)
 			{
 				if (EnrollMove->Day1 == CourseCur->Day1)
@@ -581,7 +596,7 @@ void CourseEnroll(Schoolyear* YearCur, Course* CourseHead, int x, int& NumOfOpt)
 
 			}
 			Data* InfoMove = CourseCur->DataOfStu;
-			while (InfoMove != nullptr && InfoMove->StudentID != YearCur->CLass[j].Stu[k].StudentID)
+			while (InfoMove != nullptr && InfoMove->StudentID != Year->CLass[j].Stu[k].StudentID)
 			{
 				InfoMove = InfoMove->pNext;
 			}
@@ -594,9 +609,9 @@ void CourseEnroll(Schoolyear* YearCur, Course* CourseHead, int x, int& NumOfOpt)
 					Data* temp = new Data;
 					temp->j = j;
 					temp->k = k;
-					temp->StudentID = YearCur->CLass[j].Stu[k].StudentID;
-					temp->FirstName = YearCur->CLass[j].Stu[k].FirstName;
-					temp->Name = YearCur->CLass[j].Stu[k].Name;
+					temp->StudentID = Year->CLass[j].Stu[k].StudentID;
+					temp->FirstName = Year->CLass[j].Stu[k].FirstName;
+					temp->Name = Year->CLass[j].Stu[k].Name;
 					temp->pNext = nullptr;
 
 
@@ -629,8 +644,8 @@ void CourseEnroll(Schoolyear* YearCur, Course* CourseHead, int x, int& NumOfOpt)
 					else
 					{
 
-						YearCur->CLass[j].Stu[k].Registered = new Course;
-						ListEnroll = YearCur->CLass[j].Stu[k].Registered;
+						Year->CLass[j].Stu[k].Registered = new Course;
+						ListEnroll = Year->CLass[j].Stu[k].Registered;
 					}
 
 					ListEnroll->CourseID = CourseCur->CourseID;
@@ -668,12 +683,12 @@ void CourseEnroll(Schoolyear* YearCur, Course* CourseHead, int x, int& NumOfOpt)
 	}
 }
 
-void ViewListEnrolled(Schoolyear* YearCur, int x)
+void ViewListEnrolled(Schoolyear* Year, int x)
 {
 	int i = 1;
 	int j = (x / 100) - 1;
 	int k = (x % 100) - 1;
-	Course* CourseCur = YearCur->CLass[j].Stu[k].Registered;
+	Course* CourseCur = Year->CLass[j].Stu[k].Registered;
 	while (CourseCur != nullptr)
 	{
 		cout << i << "." << CourseCur->CourseID << endl;
@@ -688,23 +703,23 @@ void ViewListEnrolled(Schoolyear* YearCur, int x)
 	}
 }
 
-void RemoveCourseEnrolled(Schoolyear* YearCur, Course* CourseHead, int x)
+void RemoveCourseEnrolled(Schoolyear* Year, Course* CourseHead, int x)
 {
 	int j = (x / 100) - 1;
 	int k = (x % 100) - 1;
 	Data* InfoCur = nullptr;
-	Course* ListEnroll = YearCur->CLass[j].Stu[k].Registered;
+	Course* ListEnroll = Year->CLass[j].Stu[k].Registered;
 	Course* CourseCur = CourseHead;
 	if (ListEnroll == nullptr) return;
 	int optRemv, t = 0, i = 1;
-	ViewCourse(ListEnroll, t, i);
+	ViewCou(ListEnroll, t, i);
 	t++; i--;
 	cout << "Input num of the course to remove:";
 	cin >> optRemv;
 	Course* temp = nullptr;
 	if (optRemv == 1)
 	{
-		YearCur->CLass[j].Stu[k].Registered = YearCur->CLass[j].Stu[k].Registered->pNext;
+		Year->CLass[j].Stu[k].Registered = Year->CLass[j].Stu[k].Registered->pNext;
 		temp = ListEnroll;
 	}
 	else
@@ -735,7 +750,7 @@ void RemoveCourseEnrolled(Schoolyear* YearCur, Course* CourseHead, int x)
 	{
 		InfoCur = CourseCur->DataOfStu;
 
-		if (InfoCur->StudentID == YearCur->CLass[j].Stu[k].StudentID)
+		if (InfoCur->StudentID == Year->CLass[j].Stu[k].StudentID)
 		{
 
 			CourseCur->DataOfStu = CourseCur->DataOfStu->pNext;
@@ -743,7 +758,7 @@ void RemoveCourseEnrolled(Schoolyear* YearCur, Course* CourseHead, int x)
 		}
 		else
 		{
-			while (InfoCur->pNext != nullptr && InfoCur->pNext->StudentID != YearCur->CLass[j].Stu[k].StudentID)
+			while (InfoCur->pNext != nullptr && InfoCur->pNext->StudentID != Year->CLass[j].Stu[k].StudentID)
 			{
 				InfoCur = InfoCur->pNext;
 			}
@@ -756,50 +771,50 @@ void RemoveCourseEnrolled(Schoolyear* YearCur, Course* CourseHead, int x)
 			}
 		}
 		CourseCur->NumOfStu--;
-		YearCur->CLass[j].Stu[k].NumOfOpt--;
+		Year->CLass[j].Stu[k].NumOfOpt--;
 	}
 	cout << "Remove course succesfully." << endl;
 }
 
-void ViewListClasses(Schoolyear* YearCur)
+void ViewListClasses(Schoolyear* Year)
 {
 	//thêm gotoxy và kẻ khung, thêm hàm Back()
 	string year = "";
 	cout << "Enter the year you want to view class: ";
 	cin >> year;
 	cout << endl;
-	while (YearCur != nullptr)
+	while (Year != nullptr)
 	{
-		if (year == YearCur->NumOfYear)
+		if (year == Year->NumOfYear)
 		{
-			for (int i = 0; i < YearCur->NumOfClass; i++)
+			for (int i = 0; i < Year->NumOfClass; i++)
 			{
-				cout << i + 1 << "." << YearCur->CLass[i].NameOfClass;
+				cout << i + 1 << "." << Year->CLass[i].NameOfClass;
 				cout << endl;
 			}
 
 			break;
 		}
-		YearCur = YearCur->YearNext;
+		Year = Year->YearNext;
 	}
-	if (YearCur == nullptr)
+	if (Year == nullptr)
 	{
 		cout << "The entered year is not available" << endl;
 	}
 
 }
 
-void ViewListStudentInClass(Schoolyear* YearCur)
+void ViewListStudentInClass(Schoolyear* Year)
 {
 	string NameClass = "";
-	cout << "Enter the name class you want to view: ";
+	cout << "Enter the Name class you want to view: ";
 	getline(cin, NameClass);
 	char keycap = 75;
-	while (YearCur != nullptr)
+	while (Year != nullptr)
 	{
-		for (int i = 0; i < YearCur->NumOfClass; i++)
+		for (int i = 0; i < Year->NumOfClass; i++)
 		{
-			if (NameClass == YearCur->CLass[i].NameOfClass)
+			if (NameClass == Year->CLass[i].NameOfClass)
 			{
 				while (keycap != 13)
 				{
@@ -808,22 +823,22 @@ void ViewListStudentInClass(Schoolyear* YearCur)
 						/*clear();*/
 						/*gotoxy(51, 9);*/
 						cout << NameClass;
-						for (int j = 0; j < YearCur->CLass[i].NumOfStudent / 2; j++)
+						for (int j = 0; j < Year->CLass[i].NumOfStudent / 2; j++)
 						{
 							/*gotoxy(15, j + 10);*/
-							cout << YearCur->CLass[i].Stu[j].Num;
+							cout << Year->CLass[i].Stu[j].Num;
 							/*gotoxy(19, j + 10);*/
-							cout << YearCur->CLass[i].Stu[j].StudentID;
+							cout << Year->CLass[i].Stu[j].StudentID;
 							/*gotoxy(30, j + 10);*/
-							cout << YearCur->CLass[i].Stu[j].FirstName;
-							/*gotoxy(31 + YearCur->CLass[i].Stu[j].FirstName.length(), j + 10);*/
-							cout << YearCur->CLass[i].Stu[j].Name;
+							cout << Year->CLass[i].Stu[j].FirstName;
+							/*gotoxy(31 + Year->CLass[i].Stu[j].FirstName.length(), j + 10);*/
+							cout << Year->CLass[i].Stu[j].Name;
 							/*gotoxy(57, j + 10);*/
-							cout << YearCur->CLass[i].Stu[j].Sex;
+							cout << Year->CLass[i].Stu[j].Sex;
 							/*gotoxy(65, j + 10);*/
-							cout << YearCur->CLass[i].Stu[j].DOB;
+							cout << Year->CLass[i].Stu[j].DOB;
 							/*gotoxy(79, j + 10);*/
-							cout << YearCur->CLass[i].Stu[j].ID;
+							cout << Year->CLass[i].Stu[j].ID;
 
 						}
 						keycap = getch();
@@ -834,25 +849,25 @@ void ViewListStudentInClass(Schoolyear* YearCur)
 						/*clear();*/
 						/*gotoxy(51, 9);*/
 						cout << NameClass;
-						int j = YearCur->CLass[i].NumOfStudent / 2;
+						int j = Year->CLass[i].NumOfStudent / 2;
 						int k = 0;
 
-						while (j < YearCur->CLass[i].NumOfStudent)
+						while (j < Year->CLass[i].NumOfStudent)
 						{
 							/*gotoxy(15, k + 10);*/
-							cout << YearCur->CLass[i].Stu[j].Num;
+							cout << Year->CLass[i].Stu[j].Num;
 							/*gotoxy(19, k + 10);*/
-							cout << YearCur->CLass[i].Stu[j].StudentID;
+							cout << Year->CLass[i].Stu[j].StudentID;
 							/*gotoxy(30, k + 10);*/
-							cout << YearCur->CLass[i].Stu[j].FirstName;
-							/*gotoxy(31 + YearCur->CLass[i].Stu[j].FirstName.length(), k + 10);*/
-							cout << YearCur->CLass[i].Stu[j].Name;
+							cout << Year->CLass[i].Stu[j].FirstName;
+							/*gotoxy(31 + Year->CLass[i].Stu[j].FirstName.length(), k + 10);*/
+							cout << Year->CLass[i].Stu[j].Name;
 							/*gotoxy(57, k + 10);*/
-							cout << YearCur->CLass[i].Stu[j].Sex;
+							cout << Year->CLass[i].Stu[j].Sex;
 							/*gotoxy(65, k + 10);*/
-							cout << YearCur->CLass[i].Stu[j].DOB;
+							cout << Year->CLass[i].Stu[j].DOB;
 							/*gotoxy(79, k + 10);*/
-							cout << YearCur->CLass[i].Stu[j].ID;
+							cout << Year->CLass[i].Stu[j].ID;
 							j++;
 							k++;
 						}
@@ -863,20 +878,20 @@ void ViewListStudentInClass(Schoolyear* YearCur)
 				return;
 			}
 		}
-		YearCur = YearCur->YearNext;
+		Year = Year->YearNext;
 	}
-	if (YearCur == nullptr)
+	if (Year == nullptr)
 	{
-		cout << "The entered name of is not available" << endl;
+		cout << "The entered Name of is not available" << endl;
 	}
 }
 
-void ViewListStudentInCourse(Schoolyear* YearCur, int sem)
+void ViewListStudentInCourse(Schoolyear* Year, int sem)
 {
 	string CourseID = "";
 	cout << "Enter the course ID you want to view:";
 	getline(cin, CourseID);
-	Course* CourseCur = YearCur->Sem[sem].pCourse;
+	Course* CourseCur = Year->Sem[sem].pCourse;
 	while (CourseCur != nullptr)
 	{
 		if (CourseID == CourseCur->CourseID)
@@ -891,7 +906,7 @@ void ViewListStudentInCourse(Schoolyear* YearCur, int sem)
 					/*clear();*/
 					int k = 1;
 					/*gotoxy(40, 9);*/
-					cout << "NUM  STUDENT ID  NAME";
+					cout << "NUM  STUDENT ID  Name";
 					while (k <= CourseCur->NumOfStu / 2)
 					{
 						/*gotoxy(40, k + 10);*/
@@ -907,7 +922,7 @@ void ViewListStudentInCourse(Schoolyear* YearCur, int sem)
 					/*clear();*/
 					int k = CourseCur->NumOfStu / 2 + 1;
 					/*gotoxy(40, 9);*/
-					cout << "NUM  STUDENT ID  NAME";
+					cout << "NUM  STUDENT ID  Name";
 					while (k <= CourseCur->NumOfStu)
 					{
 						/*gotoxy(40, k + 10 - CourseCur->NumOfStu / 2 - 1);*/
@@ -969,7 +984,7 @@ void ExportListStudentCourse(Course* CourseHead)
 
 }
 
-void LoadScoreboard(Course*& CourseHead, Schoolyear*& YearCur)
+void LoadScoreboard(Course*& CourseHead, Schoolyear*& Year)
 {
 
 	ifstream input;
@@ -1007,7 +1022,7 @@ void LoadScoreboard(Course*& CourseHead, Schoolyear*& YearCur)
 				getline(input, InfoCur->Score.Other);
 
 
-				Course* EnrollList = YearCur->CLass[InfoCur->j].Stu[InfoCur->k].Registered;
+				Course* EnrollList = Year->CLass[InfoCur->j].Stu[InfoCur->k].Registered;
 
 				while (EnrollList != nullptr && EnrollList->CourseID != CourseCur->CourseID)
 				{
@@ -1040,7 +1055,7 @@ void ViewScoreboardCourse(Course* CourseHead)
 	string NameOfCourse;
 	Course* CourseCur = CourseHead;
 	Data* InfoCur = nullptr;
-	cout << "Input name of course: ";
+	cout << "Input Name of course: ";
 	cin.ignore();
 	getline(cin, NameOfCourse);
 
@@ -1063,19 +1078,19 @@ void ViewScoreboardCourse(Course* CourseHead)
 
 }
 
-void ViewScoreboardClass(Schoolyear* YearCur, int x)
+void ViewScoreboardClass(Schoolyear* Year, int x)
 {
 	int j = (x / 100) - 1;
 	string NameOfCourse;
-	cout << "Input name of course: ";
+	cout << "Input Name of course: ";
 	cin.ignore();
 	getline(cin, NameOfCourse);
 
 
 	cout << left << setw(4) << "Num" << left << setw(12) << "Student ID" << left << setw(25) << "FirstName" << left << setw(10) << "Name" << right << setw(12) << "GPA Total" << right << setw(12) << "GPA Final" << endl;
-	for (int i = 0; i < YearCur->CLass[x].NumOfStudent; i++)
+	for (int i = 0; i < Year->CLass[x].NumOfStudent; i++)
 	{
-		Course* EnrollList = YearCur->CLass[j].Stu[i].Registered;
+		Course* EnrollList = Year->CLass[j].Stu[i].Registered;
 
 		while (EnrollList != nullptr && EnrollList->NameOfCourse != NameOfCourse)
 		{
@@ -1083,27 +1098,27 @@ void ViewScoreboardClass(Schoolyear* YearCur, int x)
 		}
 
 		if (EnrollList != nullptr)
-			cout << left << setw(4) << i + 1 << left << setw(12) << YearCur->CLass[j].Stu[i].StudentID << left << setw(25) << YearCur->CLass[j].Stu[i].FirstName << left << setw(10) << YearCur->CLass[j].Stu[i].Name << right << setw(12) << EnrollList->Score.Total << right << setw(12) << EnrollList->Score.Final << endl;
+			cout << left << setw(4) << i + 1 << left << setw(12) << Year->CLass[j].Stu[i].StudentID << left << setw(25) << Year->CLass[j].Stu[i].FirstName << left << setw(10) << Year->CLass[j].Stu[i].Name << right << setw(12) << EnrollList->Score.Total << right << setw(12) << EnrollList->Score.Final << endl;
 
 	}
 
 
 }
 
-void ViewScoreboardStu(Schoolyear* YearCur, int x)
+void ViewScoreboardStu(Schoolyear* Year, int x)
 {
 	int j = (x / 100) - 1;
 	int k = (x % 100) - 1;
-	Course* EnrollList = YearCur->CLass[j].Stu[k].Registered;
+	Course* EnrollList = Year->CLass[j].Stu[k].Registered;
 	cout << left << setw(4) << "No" << left << setw(12) << "StudentID" << left << setw(25) << "FirstName" << left << setw(10) << "Name" << right << setw(12) << "Total Mark" << right << setw(12) << "Final Mark" << right << setw(14) << "Midterm Mark" << right << setw(12) << "Other Mark" << endl;
 	while (EnrollList != nullptr)
 	{
-		cout << left << setw(4) << YearCur->CLass[j].Stu[k].Num << left << setw(12) << YearCur->CLass[j].Stu[k].StudentID << left << setw(25) << YearCur->CLass[j].Stu[k].FirstName << left << setw(10) << YearCur->CLass[j].Stu[k].Name << right << setw(12) << EnrollList->Score.Total << right << setw(12) << EnrollList->Score.Final << right << setw(14) << EnrollList->Score.Midterm << right << setw(12) << EnrollList->Score.Other << endl;
+		cout << left << setw(4) << Year->CLass[j].Stu[k].Num << left << setw(12) << Year->CLass[j].Stu[k].StudentID << left << setw(25) << Year->CLass[j].Stu[k].FirstName << left << setw(10) << Year->CLass[j].Stu[k].Name << right << setw(12) << EnrollList->Score.Total << right << setw(12) << EnrollList->Score.Final << right << setw(14) << EnrollList->Score.Midterm << right << setw(12) << EnrollList->Score.Other << endl;
 		EnrollList = EnrollList->pNext;
 	}
 }
 
-void UpdateStudentResult(Schoolyear*& YearCur, Course*& CourseHead)
+void UpdateStudentResult(Schoolyear*& Year, Course*& CourseHead)
 {
 	int opt;
 	string StudentID;
@@ -1144,7 +1159,7 @@ void UpdateStudentResult(Schoolyear*& YearCur, Course*& CourseHead)
 				InfoCur = InfoCur->pNext;
 			}
 
-			EnrollList = YearCur->CLass[InfoCur->j].Stu[InfoCur->k].Registered;
+			EnrollList = Year->CLass[InfoCur->j].Stu[InfoCur->k].Registered;
 			while (EnrollList != nullptr && EnrollList->NameOfCourse != NameOfCourse)
 			{
 				EnrollList = EnrollList->pNext;

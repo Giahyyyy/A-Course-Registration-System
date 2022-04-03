@@ -75,29 +75,29 @@ void gotoxy(int x, int y);
 
 void clear();
 
-void InputYourAcc(string& username, string& Pass);
+void InputAccount(string& name, string& Pass);
 
-void AddNewYear(Schoolyear*& NewYear);
+void AddYear(Schoolyear*& Ny);
 
-void InputStaff(Teacher*& Staff, int& NumOfStaff);
+void InputStaff(Teacher*& S, int& NumOfS);
 
-int CheckLogin(string username, string Pass, Schoolyear*& YearCur, Teacher* Staff, int NumOfStaff);
+int CheckLogin(string username, string Pass, Schoolyear*& Year, Teacher* S, int NumOfS);
 
-void ViewInfo(int x, Schoolyear* YearCur, Teacher* Staff);
+void ViewIn(int x, Schoolyear* Year, Teacher* Staff);
 
-void ChangePass(Schoolyear* YearCur, Teacher* Staff, int x, int NumOfStaff);
+void ChangePass(Schoolyear* Year, Teacher* Staff, int x, int NumOfStaff);///
 
-void AddNewSemester(Schoolyear*& YearCur, int& x);
+void AddSem(Schoolyear*& Year, int& x);
 
-void AddNewCourse(Course*& CourseHead);
+void AddCou(Course*& Cou);
 
-void ViewCourse(Course* CourseHead, int& t, int& i);
+void ViewCou(Course* Cou, int& t, int& i);//
 
-void UpdateCourse(Schoolyear* YearCur, int sem);
+void UpdateCou(Schoolyear* Year, int Se);
 
-void SaveInfoCourse(Schoolyear* YearCur, int sem);
+void SaveInfoCou(Schoolyear* Year, int Se);
 
-void DeleteCourse(Schoolyear*& YearCur, int sem);
+void DeleteCou(Schoolyear*& Year, int Se);
 
 void Now(Date& Today);
 
