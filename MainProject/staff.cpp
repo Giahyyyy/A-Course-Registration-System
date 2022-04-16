@@ -1118,7 +1118,7 @@ void ViewScoreboardStu(Schoolyear* Year, int x)
 	}
 }
 
-void UpdateStudentResult(Schoolyear*& Year, Course*& CourseHead)
+void UpdateStudentResult(Schoolyear*& YearCur, Course*& CourseHead)
 {
 	int opt;
 	string StudentID;
@@ -1159,7 +1159,7 @@ void UpdateStudentResult(Schoolyear*& Year, Course*& CourseHead)
 				InfoCur = InfoCur->pNext;
 			}
 
-			EnrollList = Year->CLass[InfoCur->j].Stu[InfoCur->k].Registered;
+			EnrollList = YearCur->CLass[InfoCur->j].Stu[InfoCur->k].Registered;
 			while (EnrollList != nullptr && EnrollList->NameOfCourse != NameOfCourse)
 			{
 				EnrollList = EnrollList->pNext;
